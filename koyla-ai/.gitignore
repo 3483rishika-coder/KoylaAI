@@ -1,0 +1,12 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.DS_Store
+__MACOSX/
+data/evidenceos.db*
+data/store/
+data/originals/
+data/*.log

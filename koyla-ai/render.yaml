@@ -1,0 +1,27 @@
+# Render Blueprint — New + > Blueprint > pick this repo.
+services:
+  - type: web
+    name: koyla-ai
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    region: singapore            # closest Render region to India
+    plan: standard               # 2 GB RAM / 1 vCPU — OCR + embeddings need more than 512 MB
+    healthCheckPath: /healthz
+    autoDeployTrigger: commit
+    disk:                        # keeps uploaded PDFs + the database across restarts/deploys
+      name: koyla-data
+      mountPath: /data
+      sizeGB: 5
+    envVars:
+      - key: EVIDENCEOS_DATA_DIR
+        value: /data
+      - key: EVIDENCEOS_WORKER
+        value: "1"
+      - key: EVIDENCEOS_EMBEDDINGS
+        value: "1"
+      - key: LLM_PROVIDER          # no LLM server on Render -> answers are extractive (numbers never depend on an LLM anyway)
+        value: none
+      - key: LLM_BASE_URL
+        value: ""
+      - key: BHASHINI_ENABLED
+        value: "1"
